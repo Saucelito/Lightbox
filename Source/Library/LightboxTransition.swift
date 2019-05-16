@@ -46,7 +46,6 @@ class LightboxTransition: UIPercentDrivenInteractiveTransition {
     case .began:
       interactive = true
       lightboxController?.presented = false
-      lightboxController?.dismiss(animated: true, completion: nil)
       if let origin = scrollView?.frame.origin { initialOrigin = origin }
     case .changed:
       update(percentage)
@@ -70,7 +69,9 @@ class LightboxTransition: UIPercentDrivenInteractiveTransition {
           self.scrollView?.frame.origin.y = translation.y * 3
           controller.view.alpha = 0
           controller.view.backgroundColor = UIColor.black.withAlphaComponent(0)
-          }, completion: { _ in })
+          }, completion: { (completed) in
+            self.lightboxController?.dismiss(animated: false, completion: nil)
+        })
       } else {
         cancel()
 
